@@ -1,0 +1,10 @@
+.form-item {
+    display: flex;
+    align-items: flex-start;
+    margin: 5px;
+}
+
+label {
+    width: 80px;
+    text-align: left;
+}
