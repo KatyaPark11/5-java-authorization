@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import service.UserService;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,14 +27,14 @@ public class FileBrowserServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getSession(false) == null) {
+        String login = (String)request.getSession().getAttribute("login");
+        String password = (String)request.getSession().getAttribute("password");
+        if (UserService.getUserByLogin(login)==null || !UserService.getUserByLogin(login).getPass().equals(password))  {
             String currentURL = request.getRequestURL().toString();
             int lastSlashIndex = currentURL.lastIndexOf("/");
             response.sendRedirect(currentURL.substring(0, lastSlashIndex) + "/login");
             return;
         }
-
-        String login = (String)request.getSession().getAttribute("login");
         String currentDirectory;
         String pathToUserDir = "C:\\Users\\KatyaPark11\\Desktop\\Моё\\" + login;
         String pathFromRequest = request.getParameter("path");
